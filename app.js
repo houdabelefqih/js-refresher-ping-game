@@ -3,7 +3,7 @@
  */
 
 // variable declarations and initialization
-var scores, roundScore, currentPlayer;
+var scores, roundScore, currentPlayer, gameOver;
 
 // counters are set to 0 for both players
 resetCounters()
@@ -14,7 +14,7 @@ document.querySelector(".btn-new").addEventListener("click", resetCounters);
 // handle the rolling of the dice
 document.querySelector(".btn-roll").addEventListener("click", function () {
 
-    if (!gameOver()){
+    if (!gameOver){
         var dice = Math.floor(Math.random() * 6) + 1;
 
         // display the appropriate dice image
@@ -35,7 +35,7 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
 
 document.querySelector(".btn-hold").addEventListener("click", function () {
 
-    if (!gameOver()){
+    if (!gameOver){
         //add current round score to total score of current player
         scores[currentPlayer] += roundScore;
 
@@ -45,6 +45,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
 
         // check if current player has won the game
         if (scores[currentPlayer] >= 100) {
+            gameOver = true;
 
             document.getElementById('name-'+ currentPlayer).textContent = 'Winner!';
             document.querySelector(".dice").style.display = "none";
@@ -71,6 +72,7 @@ function resetCounters() {
     scores = [0, 0];
     roundScore = 0;
     currentPlayer = 0; //player 0 starts the game
+    gameOver = false;
 
     // don't show the dice at the beginning of the game
     document.querySelector(".dice").style.display = "none";
@@ -87,9 +89,3 @@ function resetCounters() {
       //add the active class to the first player
       document.querySelector(".player-0-panel").classList.add("active");
   }
-
-function gameOver(){
-    if (scores[0]>=100 || scores[1] >= 100) return true;
-    else return false;
-    
-}
