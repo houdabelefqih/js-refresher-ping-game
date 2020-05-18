@@ -80,7 +80,12 @@ function resetCounters() {
         document.getElementById("current-" + i).textContent = "0";
         player = i+1;
         document.getElementById('name-'+ i).textContent = 'Player '+ player;
+        document.querySelector(".player-"+i+"-panel").classList.remove("active");
+        document.querySelector(".player-"+i+"-panel").classList.remove("winner");
       }
+
+      //add the active class to the first player
+      document.querySelector(".player-0-panel").classList.add("active");
   }
 
 function gameOver(){
