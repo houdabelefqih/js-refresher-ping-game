@@ -3,7 +3,8 @@
  */
 
 // variable declarations and initialization
-var scores, roundScore, currentPlayer, gameOver;
+var scores, roundScore, currentPlayer, gameOver, previousRoll;
+var count =0;
 
 // counters are set to 0 for both players
 resetCounters()
@@ -21,16 +22,25 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
         var diceDOM = document.querySelector(".dice");
         diceDOM.style.display = "block";
         diceDOM.src = "images/dice-" + dice + ".png";
+     
+        if (dice === 1) switchPlayers();
+        else {
 
-        if (dice !== 1) {
-            roundScore += dice;
-            document.getElementById(
-            "current-" + currentPlayer
-            ).textContent = roundScore;
-        } else {
-            switchPlayers();
+            //if a six is rolled twice in a row, reset total score to 0
+            if (dice === 6 && dice === previousRoll) {
+                scores[currentPlayer] = 0;
+                document.getElementById("score-" + currentPlayer).textContent = "0";
+                switchPlayers();          
         }
-}
+            else{     
+                
+                roundScore += dice;
+                document.getElementById( "current-" + currentPlayer).textContent = roundScore;
+                previousRoll= dice;
+            }         
+        }
+    }
+    
 });
 
 document.querySelector(".btn-hold").addEventListener("click", function () {
@@ -66,6 +76,8 @@ function switchPlayers() {
   document.querySelector(".player-1-panel").classList.toggle("active");
 
   document.querySelector(".dice").style.display = "none";
+
+  previousRoll= -1;
 }
 
 function resetCounters() {
@@ -73,6 +85,13 @@ function resetCounters() {
     roundScore = 0;
     currentPlayer = 0; //player 0 starts the game
     gameOver = false;
+    previousRoll = -1;
+
+    previousRound ={
+        player : null,
+        roll : null
+
+    }
 
     // don't show the dice at the beginning of the game
     document.querySelector(".dice").style.display = "none";
