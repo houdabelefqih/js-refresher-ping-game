@@ -52,9 +52,15 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
         //update the UI
         document.getElementById("score-" + currentPlayer).textContent =
             scores[currentPlayer];
+        
+            //winning score is 100 by default
+            var winningScore =100;
+        
+        //if a custom winning score is provided, get its value
+        if (winningScore) winningScore = document.getElementById('winning-score').nodeValue;
 
         // check if current player has won the game
-        if (scores[currentPlayer] >= 100) {
+        if (scores[currentPlayer] >= winningScore) {
             gameOver = true;
 
             document.getElementById('name-'+ currentPlayer).textContent = 'Winner!';
