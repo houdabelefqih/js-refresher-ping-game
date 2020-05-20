@@ -52,12 +52,12 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
         //update the UI
         document.getElementById("score-" + currentPlayer).textContent =
             scores[currentPlayer];
-        
-            //winning score is 100 by default
-            var winningScore =100;
-        
-        //if a custom winning score is provided, get its value
-        if (winningScore) winningScore = document.getElementById('winning-score').nodeValue;
+
+        var winningScore;
+        var input = document.getElementById('winning-score').value;
+    
+        //if a custom winning score is provided, get its value otherwise set it to 100
+        input ? winningScore = input : winningScore=100;
 
         // check if current player has won the game
         if (scores[currentPlayer] >= winningScore) {
