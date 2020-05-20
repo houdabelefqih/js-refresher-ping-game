@@ -16,17 +16,26 @@ document.querySelector(".btn-new").addEventListener("click", resetCounters);
 document.querySelector(".btn-roll").addEventListener("click", function () {
 
     if (!gameOver){
-        var dice = Math.floor(Math.random() * 6) + 1;
 
-        // display the appropriate dice image
-        var diceDOM = document.querySelector(".dice");
-        diceDOM.style.display = "block";
-        diceDOM.src = "images/dice-" + dice + ".png";
+        var dices = []
+
+        for(i=0; i<2;i++){    
+            dices[i] = Math.floor(Math.random() * 6) + 1;
+
+            // display the appropriate dice image
+            document.getElementById('dice-'+i).style.display="block";
+            document.getElementById('dice-' +i).src= 'images/dice-'+ dices[i] + '.png';
+        }
      
-        if (dice === 1) switchPlayers();
+        if (dices[0] === 1 || dices[1] === 1) switchPlayers();
         else {
 
-            //if a six is rolled twice in a row, reset total score to 0
+            roundScore += (dices[0]+dices[1]);
+            document.getElementById( "current-" + currentPlayer).textContent = roundScore;
+            // previousRoll= dice;
+            
+
+     /*        //if a six is rolled twice in a row, reset total score to 0
             if (dice === 6 && dice === previousRoll) {
                 scores[currentPlayer] = 0;
                 document.getElementById("score-" + currentPlayer).textContent = "0";
@@ -37,7 +46,9 @@ document.querySelector(".btn-roll").addEventListener("click", function () {
                 roundScore += dice;
                 document.getElementById( "current-" + currentPlayer).textContent = roundScore;
                 previousRoll= dice;
-            }         
+            }    */   
+            
+        
         }
     }
     
@@ -64,7 +75,7 @@ document.querySelector(".btn-hold").addEventListener("click", function () {
             gameOver = true;
 
             document.getElementById('name-'+ currentPlayer).textContent = 'Winner!';
-            document.querySelector(".dice").style.display = "none";
+            hideDices()
             document.querySelector(".player-"+currentPlayer+"-panel").classList.remove("active");
             document.querySelector(".player-"+currentPlayer+"-panel").classList.add("winner");
             } else {
@@ -81,7 +92,7 @@ function switchPlayers() {
   document.querySelector(".player-0-panel").classList.toggle("active");
   document.querySelector(".player-1-panel").classList.toggle("active");
 
-  document.querySelector(".dice").style.display = "none";
+  hideDices()
 
   previousRoll= -1;
 }
@@ -93,14 +104,9 @@ function resetCounters() {
     gameOver = false;
     previousRoll = -1;
 
-    previousRound ={
-        player : null,
-        roll : null
-
-    }
-
     // don't show the dice at the beginning of the game
-    document.querySelector(".dice").style.display = "none";
+    hideDices()
+
 
     for (i = 0; i < scores.length; i++) {
         document.getElementById("score-" + i).textContent = "0";
@@ -109,8 +115,19 @@ function resetCounters() {
         document.getElementById('name-'+ i).textContent = 'Player '+ player;
         document.querySelector(".player-"+i+"-panel").classList.remove("active");
         document.querySelector(".player-"+i+"-panel").classList.remove("winner");
+        document.getElementById('dice-'+i).style.display = "none";
+
       }
 
+  
       //add the active class to the first player
       document.querySelector(".player-0-panel").classList.add("active");
+  }
+
+  function hideDices(){
+
+    for (i = 0; i < 2; i++) {
+        document.getElementById('dice-'+i).style.display = "none";
+      }
+
   }
